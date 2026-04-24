@@ -1,83 +1,83 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+// URL da API corrigida para o padrão do projeto
+const API_URL_LOGIN = 'http://localhost/FamilyHub/api/login.php';
+
 function Login() {
-  // Estados para guardar o que o usuário digita
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
-  
-  // Ferramenta do React Router para trocar de página via código
+  const [erro, setErro] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Função que roda quando o formulário é enviado
-  const handleLogin = (e) => {
-    e.preventDefault(); // Evita que a página recarregue (padrão do HTML)
-    
-    // AMANHÃ: Aqui enviaremos os dados para backend/api/auth/login.php
-    console.log("Tentando logar com:", email);
-    
-    // HOJE: Simula o sucesso e joga o usuário pro Dashboard
-    navigate('/dashboard');
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setErro('');
+    setLoading(true);
+
+    try {
+      const response = await fetch(API_URL_LOGIN, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, senha })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // O backend retorna os dados do usuário em data.data
+        localStorage.setItem('familyhub_user_active', JSON.stringify(data.data));
+        
+        // Manda o usuário para a tela inicial
+        navigate('/dashboard');
+      } else {
+        setErro(data.error || 'Erro ao fazer login. Verifique os dados.');
+      }
+    } catch (error) {
+      console.error("Erro no login:", error);
+      setErro('Erro de conexão com o servidor. O XAMPP está ligado?');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div 
-      className="d-flex align-items-center justify-content-center min-vh-100" 
-      style={{ background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)' }}
-    >
-      <div className="card shadow-lg border-0 rounded-4 p-4 p-md-5" style={{ width: '100%', maxWidth: '450px' }}>
+    <div className="d-flex align-items-center justify-content-center" style={{ minHeight: '100vh', backgroundColor: '#f7f7f5' }}>
+      <div style={{ backgroundColor: '#fff', padding: '40px', borderRadius: '8px', border: '1px solid #edece9', width: '100%', maxWidth: '400px', boxShadow: 'rgba(15, 15, 15, 0.05) 0px 2px 4px' }}>
         
-        {/* Cabeçalho do Login */}
         <div className="text-center mb-4">
-          <h2 className="fw-bold text-primary mb-1">FamilyHub</h2>
-          <p className="text-muted">Conecte-se à sua tribo</p>
+          <div style={{ width: '48px', height: '48px', backgroundColor: '#37352f', color: 'white', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', fontWeight: 'bold', margin: '0 auto 16px' }}>H</div>
+          <h2 className="fw-bold" style={{ color: '#37352f', fontSize: '24px' }}>Bem-vindo de volta</h2>
+          <p className="text-muted" style={{ fontSize: '14px' }}>Faça login para acessar o FamilyHub</p>
         </div>
 
-        {/* Formulário */}
+        {/* Exibe mensagem de erro se houver */}
+        {erro && (
+          <div className="alert alert-danger py-2 px-3 small text-center" role="alert">
+            {erro}
+          </div>
+        )}
+
         <form onSubmit={handleLogin}>
-          
-          {/* Campo de Email com Floating Label */}
-          <div className="form-floating mb-3">
-            <input 
-              type="email" 
-              className="form-control focus-ring focus-ring-primary" 
-              id="emailInput" 
-              placeholder="nome@exemplo.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required 
-            />
-            <label htmlFor="emailInput">Email</label>
+          <div className="mb-3">
+            <label className="form-label small fw-bold mb-1" style={{ color: '#37352f' }}>E-mail</label>
+            <input type="email" className="form-control shadow-none" placeholder="seu@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
           </div>
-
-          {/* Campo de Senha com Floating Label */}
-          <div className="form-floating mb-4">
-            <input 
-              type="password" 
-              className="form-control focus-ring focus-ring-primary" 
-              id="senhaInput" 
-              placeholder="Senha"
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
-              required 
-            />
-            <label htmlFor="senhaInput">Senha</label>
+          <div className="mb-4">
+            <label className="form-label small fw-bold mb-1" style={{ color: '#37352f' }}>Senha</label>
+            <input type="password" className="form-control shadow-none" placeholder="••••••••" value={senha} onChange={(e) => setSenha(e.target.value)} required />
           </div>
-
-          {/* Botão de Ação */}
-          <button type="submit" className="btn btn-primary w-100 py-2 mb-4 fw-bold rounded-3 shadow-sm">
-            Entrar no Sistema
+          <button type="submit" className="btn w-100 text-white fw-bold" style={{ backgroundColor: '#37352f', padding: '10px' }} disabled={loading}>
+            {loading ? 'Entrando...' : 'Entrar'}
           </button>
-
-          {/* Rodapé com link para a tela de Cadastro */}
-          <div className="text-center">
-            <span className="text-muted">Ainda não tem uma família cadastrada? </span>
-            <Link to="/cadastro" className="text-decoration-none fw-bold text-primary">
-              Criar conta
-            </Link>
-          </div>
-
         </form>
+
+        <div className="mt-4 text-center" style={{ fontSize: '14px' }}>
+          <span style={{ color: '#73726e' }}>Não tem uma conta? </span>
+          <Link to="/cadastro" style={{ color: '#3b82f6', textDecoration: 'none', fontWeight: '600' }}>Cadastre-se</Link>
+        </div>
+
       </div>
     </div>
   );

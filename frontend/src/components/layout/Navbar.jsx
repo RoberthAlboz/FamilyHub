@@ -1,23 +1,85 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+
+const API_URL_MEMBROS = 'http://localhost/FamilyHub/api/membros.php';
 
 function Navbar() {
-  return (
-    <header className="d-flex justify-content-between align-items-center" style={{ height: '60px', padding: '0 32px', borderBottom: '1px solid #edece9', backgroundColor: '#ffffff' }}>
-      <div style={{ position: 'relative', width: '300px' }}>
-        <input 
-          type="text" 
-          placeholder="Pesquisar..." 
-          style={{ width: '100%', padding: '6px 12px 6px 32px', backgroundColor: '#f7f7f5', border: '1px solid transparent', borderRadius: '4px', color: '#37352f', outline: 'none', fontSize: '14px' }}
-          onFocus={(e) => e.target.style.border = '1px solid #cfcecc'}
-          onBlur={(e) => e.target.style.border = '1px solid transparent'}
-        />
-        <span style={{ position: 'absolute', left: '10px', top: '7px', fontSize: '14px', opacity: 0.5 }}>🔍</span>
-      </div>
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [membros, setMembros] = useState([]);
+  const [usuarioAtual, setUsuarioAtual] = useState(null);
 
-      <div style={{ width: '32px', height: '32px', backgroundColor: '#f472b6', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold', fontSize: '12px', cursor: 'pointer' }}>
-        FH
+  const carregarUsuariosDoBanco = async () => {
+    try {
+      const response = await fetch(API_URL_MEMBROS);
+      if (!response.ok) throw new Error('Erro na resposta da API');
+      
+      const data = await response.json();
+      const lista = Array.isArray(data) ? data : [];
+      setMembros(lista);
+
+      const saved = localStorage.getItem('familyhub_user_active');
+      const logadoSalvo = saved ? JSON.parse(saved) : null;
+
+      if (lista.length > 0 && logadoSalvo) {
+        const usuarioAtualizado = lista.find(m => m.id == logadoSalvo.id);
+        if (usuarioAtualizado) {
+          setUsuarioAtual(usuarioAtualizado);
+          localStorage.setItem('familyhub_user_active', JSON.stringify(usuarioAtualizado));
+        } else {
+          setUsuarioAtual(logadoSalvo);
+        }
+      } else if (logadoSalvo) {
+        setUsuarioAtual(logadoSalvo);
+      }
+    } catch (error) {
+      console.error("Erro ao carregar membros:", error);
+    }
+  };
+
+  useEffect(() => {
+    carregarUsuariosDoBanco();
+    window.addEventListener('atualiza-xp', carregarUsuariosDoBanco);
+    return () => window.removeEventListener('atualiza-xp', carregarUsuariosDoBanco);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('familyhub_user_active');
+    window.location.href = '/login';
+  };
+
+  return (
+    <nav className="navbar px-4 py-2 border-bottom bg-white">
+      <div className="container-fluid d-flex justify-content-end align-items-center gap-4">
+        <div className="position-relative">
+          <div
+            onClick={() => setShowDropdown(!showDropdown)}
+            style={{ cursor: 'pointer' }}
+            className="d-flex align-items-center gap-2"
+          >
+            <div className="text-end d-none d-md-block">
+              <div className="fw-bold" style={{ color: '#37352f' }}>{usuarioAtual?.nome || 'Usuário'}</div>
+              <div className="text-muted" style={{ fontSize: '12px' }}>
+                {usuarioAtual?.xp || 0} XP
+              </div>
+            </div>
+
+            <div className="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold"
+              style={{ width: '35px', height: '35px', backgroundColor: '#37352f' }}>
+              {usuarioAtual?.nome?.charAt(0)?.toUpperCase() || 'U'}
+            </div>
+          </div>
+
+          {showDropdown && (
+            <div className="position-absolute end-0 mt-2 shadow border rounded bg-white" style={{ width: '150px', zIndex: 1000 }}>
+              <div className="p-1">
+                <button onClick={handleLogout} className="btn btn-sm w-100 text-start text-danger">
+                  <i className="bi bi-box-arrow-right me-2"></i>Sair
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-    </header>
+    </nav>
   );
 }
 

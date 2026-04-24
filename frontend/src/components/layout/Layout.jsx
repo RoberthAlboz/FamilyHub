@@ -1,17 +1,37 @@
 import React from 'react';
+import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
 
-function Layout({ children }) {
+function Layout() {
   return (
-    <div className="d-flex" style={{ height: '100vh', backgroundColor: '#ffffff', overflow: 'hidden' }}>
+    <div
+      style={{
+        display: 'flex',
+        minHeight: '100vh',
+        backgroundColor: '#fafafa'
+      }}
+    >
       <Sidebar />
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+
+      <div
+        style={{
+          flexGrow: 1,
+          display: 'flex',
+          flexDirection: 'column'
+        }}
+      >
         <Navbar />
-        <main style={{ flex: 1, overflowY: 'auto', padding: '32px 48px' }}>
-          <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-            {children}
-          </div>
+
+        <main
+          style={{
+            padding: '32px',
+            flexGrow: 1,
+            overflowY: 'auto'
+          }}
+        >
+          {/* O Outlet é essencial para renderizar as rotas filhas definidas no App.jsx */}
+          <Outlet />
         </main>
       </div>
     </div>
