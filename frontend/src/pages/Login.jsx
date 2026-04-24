@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import logo2 from '../assets/2.png';
 
 // URL da API corrigida para o padrão do projeto
 const API_URL_LOGIN = 'http://localhost/FamilyHub/api/login.php';
@@ -47,7 +48,9 @@ function Login() {
       <div style={{ backgroundColor: '#fff', padding: '40px', borderRadius: '8px', border: '1px solid #edece9', width: '100%', maxWidth: '400px', boxShadow: 'rgba(15, 15, 15, 0.05) 0px 2px 4px' }}>
         
         <div className="text-center mb-4">
-          <div style={{ width: '48px', height: '48px', backgroundColor: '#37352f', color: 'white', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', fontWeight: 'bold', margin: '0 auto 16px' }}>H</div>
+          <div style={{ margin: '0 auto 16px' }}>
+            <img src={logo2} alt="FamilyHub Logo" style={{ width: '120px', height: '120px', objectFit: 'contain' }} />
+          </div>
           <h2 className="fw-bold" style={{ color: '#37352f', fontSize: '24px' }}>Bem-vindo de volta</h2>
           <p className="text-muted" style={{ fontSize: '14px' }}>Faça login para acessar o FamilyHub</p>
         </div>

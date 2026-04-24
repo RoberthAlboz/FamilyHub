@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useTheme } from "../context/ThemeContext";
 
 function Conquistas() {
+  const { isDarkMode } = useTheme();
   const [membros, setMembros] = useState([]);
   const [usuarioLogado, setUsuarioLogado] = useState(null);
 
-  // ✅ URL CORRIGIDA (nome da pasta certo)
   const API_URL = "http://localhost/FamilyHub/api/membros.php";
 
   const recompensas = [
@@ -62,7 +63,6 @@ function Conquistas() {
     try {
       const response = await fetch(API_URL);
 
-      // ✅ evita quebrar se der erro de fetch
       if (!response.ok) throw new Error("Erro na API");
 
       const data = await response.json();
@@ -83,7 +83,6 @@ function Conquistas() {
 
         setUsuarioLogado(userFinal);
 
-        // ✅ mantém sincronizado
         localStorage.setItem(
           "familyhub_user_active",
           JSON.stringify(userFinal)
@@ -130,7 +129,6 @@ function Conquistas() {
             })
           );
 
-          // ✅ força atualizar navbar XP
           window.dispatchEvent(new Event("atualiza-xp"));
 
           carregarDados();
@@ -147,11 +145,22 @@ function Conquistas() {
   const progressoNivel = (usuarioLogado?.xp || 0) % 100;
   const nivelAtual = calcularNivel(usuarioLogado?.xp);
 
+  const cardStyle = {
+    backgroundColor: isDarkMode ? "#2d2d2d" : "#ffffff",
+    borderColor: isDarkMode ? "#404040" : "#edece9",
+    color: isDarkMode ? "#ffffff" : "#37352f",
+    transition: "all 0.3s ease"
+  };
+
+  const textMutedStyle = {
+    color: isDarkMode ? "#aaa" : "#73726e"
+  };
+
   return (
     <div className="container-fluid p-0">
       <div className="mb-4">
-        <h1 style={{ fontSize: "26px", fontWeight: "700", color: "#37352f" }}>
-          <i className="bi bi-trophy-fill me-2"></i> Conquistas e Recompensas
+        <h1 style={{ fontSize: "26px", fontWeight: "700", color: isDarkMode ? "#ffffff" : "#37352f" }}>
+          <i className="bi bi-trophy-fill me-2" style={{ color: isDarkMode ? "#ffffff" : "#37352f" }}></i> Conquistas e Recompensas
         </h1>
         <p className="text-muted small">
           Dados sincronizados com MySQL via PHP.
@@ -161,19 +170,19 @@ function Conquistas() {
       <div className="row g-4">
         <div className="col-lg-8">
           <div
-            className="p-4 rounded border bg-white shadow-sm mb-4"
-            style={{ borderColor: "#edece9" }}
+            className="p-4 rounded border shadow-sm mb-4"
+            style={{ ...cardStyle }}
           >
             <div className="d-flex align-items-center justify-content-between mb-3">
               <div className="d-flex align-items-center gap-3">
                 <div
-                  className="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center fw-bold"
-                  style={{ width: "55px", height: "55px", fontSize: "20px" }}
+                  className="rounded-circle text-white d-flex align-items-center justify-content-center fw-bold"
+                  style={{ width: "55px", height: "55px", fontSize: "20px", backgroundColor: isDarkMode ? "#4a4a4a" : "#37352f" }}
                 >
                   {nivelAtual}
                 </div>
                 <div>
-                  <h5 className="mb-0 fw-bold">
+                  <h5 className="mb-0 fw-bold" style={{ color: isDarkMode ? "#ffffff" : "#37352f" }}>
                     {usuarioLogado?.nome || "Carregando..."}
                   </h5>
                   <span className="text-muted small">
@@ -183,27 +192,27 @@ function Conquistas() {
               </div>
               <div className="text-end">
                 <div
-                  className="small fw-bold text-muted text-uppercase"
-                  style={{ fontSize: "10px" }}
+                  className="small fw-bold text-uppercase"
+                  style={{ fontSize: "10px", ...textMutedStyle }}
                 >
                   Progresso
                 </div>
-                <div className="small fw-bold">{progressoNivel}/100 XP</div>
+                <div className="small fw-bold" style={{ color: isDarkMode ? "#ffffff" : "#37352f" }}>{progressoNivel}/100 XP</div>
               </div>
             </div>
 
             <div
               className="progress"
-              style={{ height: "10px", backgroundColor: "#f7f7f5" }}
+              style={{ height: "10px", backgroundColor: isDarkMode ? "#333" : "#f7f7f5" }}
             >
               <div
-                className="progress-bar bg-dark"
-                style={{ width: `${progressoNivel}%` }}
+                className="progress-bar"
+                style={{ width: `${progressoNivel}%`, backgroundColor: isDarkMode ? "#4a4a4a" : "#37352f" }}
               ></div>
             </div>
           </div>
 
-          <h6 className="fw-bold mb-3 text-uppercase small text-muted">
+          <h6 className="fw-bold mb-3 text-uppercase small" style={textMutedStyle}>
             Loja de Benefícios
           </h6>
 
@@ -211,21 +220,21 @@ function Conquistas() {
             {recompensas.map((item) => (
               <div key={item.id} className="col-md-6">
                 <div
-                  className="p-3 rounded border bg-white h-100 d-flex flex-column justify-content-between"
-                  style={{ borderColor: "#edece9" }}
+                  className="p-3 rounded border h-100 d-flex flex-column justify-content-between"
+                  style={{ ...cardStyle }}
                 >
                   <div className="d-flex align-items-start gap-3 mb-3">
                     <div
-                      className="rounded bg-light d-flex align-items-center justify-content-center"
-                      style={{ minWidth: "45px", height: "45px" }}
+                      className="rounded d-flex align-items-center justify-content-center"
+                      style={{ minWidth: "45px", height: "45px", backgroundColor: isDarkMode ? "#333" : "#f8f9fa" }}
                     >
                       <i
                         className={`bi ${item.icon}`}
-                        style={{ fontSize: "20px", color: "#37352f" }}
+                        style={{ fontSize: "20px", color: isDarkMode ? "#ffffff" : "#37352f" }}
                       ></i>
                     </div>
                     <div>
-                      <div className="fw-bold" style={{ fontSize: "14px" }}>
+                      <div className="fw-bold" style={{ fontSize: "14px", color: isDarkMode ? "#ffffff" : "#37352f" }}>
                         {item.nome}
                       </div>
                       <div className="text-muted" style={{ fontSize: "12px" }}>
@@ -238,10 +247,19 @@ function Conquistas() {
                     onClick={() => trocarXP(item)}
                     className={`btn btn-sm w-100 ${
                       usuarioLogado?.xp >= item.custo
-                        ? "btn-dark"
+                        ? isDarkMode ? "btn-light text-dark" : "btn-dark"
                         : "btn-light text-muted"
                     }`}
                     disabled={!usuarioLogado || usuarioLogado.xp < item.custo}
+                    style={{
+                      backgroundColor: usuarioLogado?.xp >= item.custo 
+                        ? (isDarkMode ? "#ffffff" : "#37352f")
+                        : (isDarkMode ? "#333" : "#f8f9fa"),
+                      color: usuarioLogado?.xp >= item.custo 
+                        ? (isDarkMode ? "#000" : "#fff")
+                        : (isDarkMode ? "#aaa" : "#73726e"),
+                      borderColor: isDarkMode ? "#444" : "#dee2e6"
+                    }}
                   >
                     {usuarioLogado?.xp >= item.custo
                       ? `Resgatar (${item.custo} XP)`
@@ -257,10 +275,10 @@ function Conquistas() {
 
         <div className="col-lg-4">
           <div
-            className="p-4 rounded border bg-white shadow-sm"
-            style={{ borderColor: "#edece9" }}
+            className="p-4 rounded border shadow-sm"
+            style={{ ...cardStyle }}
           >
-            <h6 className="fw-bold mb-4 text-uppercase small text-muted">
+            <h6 className="fw-bold mb-4 text-uppercase small" style={textMutedStyle}>
               Ranking Global
             </h6>
 
@@ -272,22 +290,22 @@ function Conquistas() {
                   style={{
                     backgroundColor:
                       m.id === usuarioLogado?.id
-                        ? "#f7f7f5"
+                        ? (isDarkMode ? "#333" : "#f7f7f5")
                         : "transparent",
                   }}
                 >
                   <div className="d-flex align-items-center gap-2">
                     <span
-                      className="fw-bold small text-muted"
-                      style={{ width: "20px" }}
+                      className="fw-bold small"
+                      style={{ width: "20px", ...textMutedStyle }}
                     >
                       {i + 1}º
                     </span>
-                    <div className="fw-bold" style={{ fontSize: "13px" }}>
+                    <div className="fw-bold" style={{ fontSize: "13px", color: isDarkMode ? "#ffffff" : "#37352f" }}>
                       {m.nome}
                     </div>
                   </div>
-                  <span className="badge bg-light text-dark border">
+                  <span className="badge" style={{ backgroundColor: isDarkMode ? "#333" : "#f7f7f5", color: isDarkMode ? "#ffffff" : "#000", border: `1px solid ${isDarkMode ? "#444" : "#dee2e6"}` }}>
                     {m.xp} XP
                   </span>
                 </div>

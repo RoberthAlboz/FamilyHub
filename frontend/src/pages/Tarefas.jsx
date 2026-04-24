@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useOutletContext } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
+import { useNotifications } from '../context/NotificationContext';
 
 function Tarefas() {
+  const { isDarkMode } = useTheme();
+  const { addNotification } = useNotifications();
   const [tasks, setTasks] = useState([]);
   const [membros, setMembros] = useState([]);
   
@@ -15,6 +20,10 @@ function Tarefas() {
 
   const API_URL = "http://localhost/FamilyHub/api/tarefas.php";
   const MEMBROS_URL = "http://localhost/FamilyHub/api/membros.php";
+
+  const categorias = [
+    "Geral", "Mercado", "Financeiro", "Saúde", "Educação", "Lazer", "Limpeza", "Manutenção", "Outros"
+  ];
 
   const carregarDados = async () => {
     try {
@@ -62,6 +71,10 @@ function Tarefas() {
       try {
         const result = JSON.parse(text);
         if (result.success) {
+          // Adicionar notificação
+          const responsavelNome = membros.find(m => m.id == newTaskAssignedTo)?.nome || 'Responsável';
+          addNotification(`Nova tarefa criada: "${newTaskText}" atribuída a ${responsavelNome}`);
+          
           setNewTaskText("");
           setNewTaskEndDate("");
           setNewTaskAssignedTo("");
@@ -90,9 +103,12 @@ function Tarefas() {
       });
 
       carregarDados();
-
-      // ✅ CORREÇÃO DO XP (evento certo)
       window.dispatchEvent(new Event('atualiza-xp'));
+      
+      // Adicionar notificação de conclusão
+      if (novoStatus === 'concluida') {
+        addNotification(`Tarefa concluída: "${task.titulo}"`);
+      }
 
     } catch (error) {
       console.error("Erro ao alternar status:", error);
@@ -130,34 +146,41 @@ function Tarefas() {
   const corPrioridade = (p) => p === 'Alta' ? '#dc3545' : (p === 'Média' ? '#ffc107' : '#198754');
   const selectedTask = tasks.find(t => t.id === selectedTaskId);
 
+  const cardStyle = {
+    backgroundColor: isDarkMode ? '#2d2d2d' : '#fff',
+    borderColor: isDarkMode ? '#404040' : '#edece9',
+    color: isDarkMode ? '#ffffff' : '#37352f',
+    borderRadius: '8px',
+    border: '1px solid',
+    transition: 'all 0.3s ease'
+  };
+
   return (
     <div className="container-fluid p-0">
-      <h1 style={{ fontSize: '28px', fontWeight: '700', color: '#37352f' }}>Gerenciador de Tarefas</h1>
+      <h1 style={{ fontSize: '28px', fontWeight: '700', color: isDarkMode ? '#ffffff' : '#37352f' }}>Gerenciador de Tarefas</h1>
       <p className="text-muted mb-4">Sincronizado com o MySQL</p>
 
-      <form onSubmit={handleAddTask} className="mb-4 p-3 shadow-sm" style={{ backgroundColor: '#f7f7f5', borderRadius: '8px', border: '1px solid #edece9' }}>
+      <form onSubmit={handleAddTask} className="mb-4 p-3 shadow-sm" style={{ ...cardStyle, backgroundColor: isDarkMode ? '#333' : '#f7f7f5' }}>
         <div className="row g-3">
           <div className="col-md-12">
-            <input type="text" className="form-control border-0" placeholder="Título da tarefa..." value={newTaskText} onChange={(e) => setNewTaskText(e.target.value)} required />
+            <input type="text" className="form-control border-0" placeholder="Título da tarefa..." value={newTaskText} onChange={(e) => setNewTaskText(e.target.value)} required style={{ backgroundColor: isDarkMode ? '#444' : 'transparent', color: isDarkMode ? '#fff' : '#000' }} />
           </div>
 
           <div className="col-md-3">
-            <select className="form-select border-0" value={newTaskAssignedTo} onChange={(e) => setNewTaskAssignedTo(e.target.value)} required>
+            <select className="form-select border-0" value={newTaskAssignedTo} onChange={(e) => setNewTaskAssignedTo(e.target.value)} required style={{ backgroundColor: isDarkMode ? '#444' : 'transparent', color: isDarkMode ? '#fff' : '#000' }}>
               <option value="">Responsável...</option>
               {membros.map(m => <option key={m.id} value={m.id}>{m.nome}</option>)}
             </select>
           </div>
 
           <div className="col-md-3">
-            <select className="form-select border-0" value={newTaskCategory} onChange={(e) => setNewTaskCategory(e.target.value)}>
-              <option value="Geral">Geral</option>
-              <option value="Mercado">Mercado</option>
-              <option value="Financeiro">Financeiro</option>
+            <select className="form-select border-0" value={newTaskCategory} onChange={(e) => setNewTaskCategory(e.target.value)} style={{ backgroundColor: isDarkMode ? '#444' : 'transparent', color: isDarkMode ? '#fff' : '#000' }}>
+              {categorias.map(cat => <option key={cat} value={cat}>{cat}</option>)}
             </select>
           </div>
 
           <div className="col-md-2">
-            <select className="form-select border-0" value={newTaskPriority} onChange={(e) => setNewTaskPriority(e.target.value)}>
+            <select className="form-select border-0" value={newTaskPriority} onChange={(e) => setNewTaskPriority(e.target.value)} style={{ backgroundColor: isDarkMode ? '#444' : 'transparent', color: isDarkMode ? '#fff' : '#000' }}>
               <option value="Baixa">Baixa</option>
               <option value="Média">Média</option>
               <option value="Alta">Alta</option>
@@ -165,7 +188,7 @@ function Tarefas() {
           </div>
 
           <div className="col-md-2">
-            <input type="date" className="form-control border-0" value={newTaskEndDate} onChange={(e) => setNewTaskEndDate(e.target.value)} />
+            <input type="date" className="form-control border-0" value={newTaskEndDate} onChange={(e) => setNewTaskEndDate(e.target.value)} style={{ backgroundColor: isDarkMode ? '#444' : 'transparent', color: isDarkMode ? '#fff' : '#000' }} />
           </div>
 
           <div className="col-md-2 d-grid">
@@ -178,7 +201,7 @@ function Tarefas() {
         <div className="col-md-7">
           <div className="d-flex flex-column gap-2">
             {tasks.map(task => (
-              <div key={task.id} onClick={() => setSelectedTaskId(task.id)} className="p-3 shadow-sm" style={{ borderRadius: '8px', border: '1px solid #edece9', backgroundColor: selectedTaskId === task.id ? '#f7f7f5' : '#fff', cursor: 'pointer', display: 'flex', gap: '12px' }}>
+              <div key={task.id} onClick={() => setSelectedTaskId(task.id)} className="p-3 shadow-sm" style={{ ...cardStyle, backgroundColor: selectedTaskId === task.id ? (isDarkMode ? '#404040' : '#f7f7f5') : (isDarkMode ? '#2d2d2d' : '#fff'), cursor: 'pointer', display: 'flex', gap: '12px' }}>
                 
                 <input type="checkbox" checked={task.status === 'concluida'} onChange={(e) => handleToggleTask(task, e)} />
 
@@ -206,12 +229,12 @@ function Tarefas() {
 
         <div className="col-md-5">
           {selectedTask ? (
-            <div className="p-3 border rounded shadow-sm bg-white" style={{ minHeight: '300px', display: 'flex', flexDirection: 'column' }}>
+            <div className="p-3 border rounded shadow-sm" style={{ ...cardStyle, minHeight: '300px', display: 'flex', flexDirection: 'column' }}>
               <h6>Notas: {selectedTask.titulo}</h6>
 
               <div className="flex-grow-1 overflow-auto mb-3" style={{ maxHeight: '250px' }}>
                 {selectedTask.comentarios?.map((c, i) => (
-                  <div key={c.id || i} className="mb-2 p-2 rounded bg-light" style={{ fontSize: '12px' }}>
+                  <div key={c.id || i} className="mb-2 p-2 rounded" style={{ fontSize: '12px', backgroundColor: isDarkMode ? '#333' : '#f8f9fa' }}>
                     <strong>{c.autor}:</strong> {c.texto}
                   </div>
                 ))}
@@ -219,13 +242,13 @@ function Tarefas() {
 
               <form onSubmit={handleAddComment}>
                 <div className="input-group">
-                  <input type="text" className="form-control form-control-sm" placeholder="Adicionar nota..." value={commentText} onChange={(e) => setCommentText(e.target.value)} />
+                  <input type="text" className="form-control form-control-sm" placeholder="Adicionar nota..." value={commentText} onChange={(e) => setCommentText(e.target.value)} style={{ backgroundColor: isDarkMode ? '#444' : '#fff', color: isDarkMode ? '#fff' : '#000' }} />
                   <button className="btn btn-dark btn-sm">Postar</button>
                 </div>
               </form>
             </div>
           ) : (
-            <div className="text-center p-5 border rounded bg-light text-muted">
+            <div className="text-center p-5 border rounded text-muted" style={{ ...cardStyle, backgroundColor: isDarkMode ? '#333' : '#f8f9fa' }}>
               Selecione uma tarefa para ver as notas.
             </div>
           )}

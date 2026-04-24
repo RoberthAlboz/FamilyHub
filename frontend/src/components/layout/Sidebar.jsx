@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useTheme } from '../../context/ThemeContext';
+import logoSidebar from '../../assets/logo.png';
 
 function Sidebar() {
+  const { isDarkMode } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -12,9 +15,22 @@ function Sidebar() {
 
   const isActive = (path) => location.pathname === path;
 
+  const sidebarStyle = {
+    width: '240px', 
+    backgroundColor: isDarkMode ? '#2d2d2d' : '#f7f7f5', 
+    borderRight: `1px solid ${isDarkMode ? '#404040' : '#edece9'}`, 
+    display: 'flex', 
+    flexDirection: 'column', 
+    padding: '16px 12px', 
+    height: '100vh',
+    position: 'sticky',
+    top: 0,
+    transition: 'all 0.3s ease'
+  };
+
   const linkStyle = (path) => ({
-    color: isActive(path) ? '#37352f' : '#73726e', 
-    backgroundColor: isActive(path) ? '#e9e9e8' : 'transparent', 
+    color: isActive(path) ? (isDarkMode ? '#ffffff' : '#37352f') : (isDarkMode ? '#aaa' : '#73726e'), 
+    backgroundColor: isActive(path) ? (isDarkMode ? '#404040' : '#e9e9e8') : 'transparent', 
     border: 'none', 
     padding: '8px 12px', 
     borderRadius: '4px', 
@@ -24,24 +40,14 @@ function Sidebar() {
     alignItems: 'center',
     gap: '10px',
     fontSize: '14px',
-    transition: 'background 0.2s'
+    transition: 'all 0.2s'
   });
 
   return (
-    <aside style={{ 
-      width: '240px', 
-      backgroundColor: '#f7f7f5', 
-      borderRight: '1px solid #edece9', 
-      display: 'flex', 
-      flexDirection: 'column', 
-      padding: '16px 12px', 
-      height: '100vh',
-      position: 'sticky',
-      top: 0
-    }}>
-      <div className="mb-4 px-2 d-flex align-items-center gap-2" style={{ fontWeight: '700', color: '#37352f', fontSize: '18px' }}>
-        <div style={{ width: '28px', height: '28px', backgroundColor: '#37352f', color: 'white', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px' }}>H</div>
-        FamilyHub
+    <aside style={sidebarStyle}>
+      <div className="mb-4 px-2 d-flex align-items-center gap-2" style={{ fontWeight: '700', color: isDarkMode ? '#ffffff' : '#37352f', fontSize: '18px' }}>
+        <img src={logoSidebar} alt="Logo" style={{ width: '110px', height: '110px', objectFit: 'contain' }} />
+        
       </div>
 
       <nav className="d-flex flex-column gap-1 flex-grow-1">
@@ -74,8 +80,8 @@ function Sidebar() {
         </Link>
       </nav>
 
-      <div className="mt-auto pt-3 border-top" style={{ borderColor: '#edece9' }}>
-        <button onClick={handleLogout} className="btn btn-sm text-start w-100 d-flex align-items-center gap-2" style={{ color: '#73726e', border: 'none', padding: '8px 12px', fontSize: '14px' }}>
+      <div className="mt-auto pt-3 border-top" style={{ borderColor: isDarkMode ? '#404040' : '#edece9' }}>
+        <button onClick={handleLogout} className="btn btn-sm text-start w-100 d-flex align-items-center gap-2" style={{ color: isDarkMode ? '#aaa' : '#73726e', border: 'none', padding: '8px 12px', fontSize: '14px', background: 'none' }}>
           <i className="bi bi-box-arrow-right"></i> Sair
         </button>
       </div>

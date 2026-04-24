@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ThemeProvider } from './context/ThemeContext';
+import { NotificationProvider } from './context/NotificationContext';
 
 // Importações das páginas
 import Login from './pages/Login';
@@ -22,32 +24,36 @@ const PrivateRoute = ({ children }) => {
 
 function App() {
   return (
-    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-      <Routes>
-        {/* Rotas Públicas */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/cadastro" element={<Cadastro />} />
+    <ThemeProvider>
+      <NotificationProvider>
+        <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+          <Routes>
+            {/* Rotas Públicas */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/cadastro" element={<Cadastro />} />
 
-        {/* Rotas Privadas dentro do Layout */}
-        <Route path="/" element={
-          <PrivateRoute>
-            <Layout />
-          </PrivateRoute>
-        }>
-          <Route index element={<Navigate to="/dashboard" replace />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="tarefas" element={<Tarefas />} />
-          <Route path="calendario" element={<Calendario />} />
-          <Route path="financas" element={<Financas />} />
-          <Route path="membros" element={<Membros />} />
-          <Route path="relatorios" element={<Relatorios />} />
-          <Route path="conquistas" element={<Conquistas />} />
-        </Route>
+            {/* Rotas Privadas dentro do Layout */}
+            <Route path="/" element={
+              <PrivateRoute>
+                <Layout />
+              </PrivateRoute>
+            }>
+              <Route index element={<Navigate to="/dashboard" replace />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="tarefas" element={<Tarefas />} />
+              <Route path="calendario" element={<Calendario />} />
+              <Route path="financas" element={<Financas />} />
+              <Route path="membros" element={<Membros />} />
+              <Route path="relatorios" element={<Relatorios />} />
+              <Route path="conquistas" element={<Conquistas />} />
+            </Route>
 
-        {/* Redirecionamento padrão */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </Router>
+            {/* Redirecionamento padrão */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Router>
+      </NotificationProvider>
+    </ThemeProvider>
   );
 }
 

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import logo2 from '../assets/2.png';
 
 // URL da API para cadastro
-
 const API_URL_CADASTRO = 'http://localhost/FamilyHub/api/cadastro.php';
 
 function Cadastro() {
@@ -46,6 +46,9 @@ function Cadastro() {
       <div style={{ backgroundColor: '#fff', padding: '40px', borderRadius: '8px', border: '1px solid #edece9', width: '100%', maxWidth: '400px', boxShadow: 'rgba(15, 15, 15, 0.05) 0px 2px 4px' }}>
         
         <div className="text-center mb-4">
+          <div style={{ margin: '0 auto 16px' }}>
+            <img src={logo2} alt="FamilyHub Logo" style={{ width: '120px', height: '120px', objectFit: 'contain' }} />
+          </div>
           <h2 className="fw-bold" style={{ color: '#37352f', fontSize: '24px' }}>Criar Conta</h2>
           <p className="text-muted" style={{ fontSize: '14px' }}>Comece a organizar sua família hoje</p>
         </div>
