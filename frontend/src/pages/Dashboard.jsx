@@ -23,7 +23,7 @@ function Dashboard() {
   const [proximosEventos, setProximosEventos] = useState([]);
   const [carregando, setCarregando] = useState(true);
 
-  const CORES = ["#3b82f6", "#10b981", "#ef4444", "#f59e0b"];
+  const CORES = ["#bc4deb", "#2b4ae1", "#c12018", "#f59e0b"];
 
   useEffect(() => {
     const userActive = JSON.parse(localStorage.getItem("familyhub_user_active"));
@@ -138,19 +138,19 @@ function Dashboard() {
         <>
           <div className="row mb-4">
             <div className="col-md-4 mb-3">
-              <div style={{ ...cardStyle, borderTop: "3px solid #3b82f6" }}>
+              <div style={{ ...cardStyle, borderTop: "3px solid #aa37d0" }}>
                 <h3 style={{ fontSize: "14px", fontWeight: "600", ...textMutedStyle, textTransform: "uppercase" }}>Tarefas Pendentes</h3>
                 <div style={{ fontSize: "32px", fontWeight: "700", color: isDarkMode ? "#ffffff" : "#37352f", marginTop: "8px" }}>{resumo.tarefasAtivas}</div>
               </div>
             </div>
             <div className="col-md-4 mb-3">
-              <div style={{ ...cardStyle, borderTop: "3px solid #ef4444" }}>
+              <div style={{ ...cardStyle, borderTop: "3px solid #44b3ef" }}>
                 <h3 style={{ fontSize: "14px", fontWeight: "600", ...textMutedStyle, textTransform: "uppercase" }}>Eventos na Agenda</h3>
                 <div style={{ fontSize: "32px", fontWeight: "700", color: isDarkMode ? "#ffffff" : "#37352f", marginTop: "8px" }}>{resumo.eventosAgenda}</div>
               </div>
             </div>
             <div className="col-md-4 mb-3">
-              <div style={{ ...cardStyle, borderTop: "3px solid #10b981" }}>
+              <div style={{ ...cardStyle, borderTop: "3px solid #ffd900" }}>
                 <h3 style={{ fontSize: "14px", fontWeight: "600", ...textMutedStyle, textTransform: "uppercase" }}>Progresso Geral</h3>
                 <div style={{ fontSize: "32px", fontWeight: "700", color: isDarkMode ? "#ffffff" : "#37352f", marginTop: "8px" }}>{resumo.progressoMetas}%</div>
               </div>
@@ -183,7 +183,7 @@ function Dashboard() {
                 <div style={{ borderTop: `1px solid ${isDarkMode ? "#404040" : "#edece9"}`, paddingTop: "12px", display: "flex", flexDirection: "column", gap: "12px", maxHeight: "280px", overflowY: "auto" }}>
                   {proximosEventos.length > 0 ? proximosEventos.map((item) => (
                     <div key={item.id} className="d-flex align-items-center gap-3">
-                      <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: item.tipo === 'feriado' ? '#a855f7' : '#3b82f6' }}></div>
+                      <div style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: item.tipo === 'feriado' ? '#5573f7' : '#3b82f6' }}></div>
                       <div style={{ flex: 1 }}>
                         <span style={{ color: isDarkMode ? "#ffffff" : "#37352f", fontSize: "14px", fontWeight: "500" }}>{item.titulo}</span>
                         <div style={{ color: isDarkMode ? "#aaa" : "#9ca3af", fontSize: "12px" }}>{item.data}</div>

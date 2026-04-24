@@ -159,8 +159,8 @@ function Conquistas() {
   return (
     <div className="container-fluid p-0">
       <div className="mb-4">
-        <h1 style={{ fontSize: "26px", fontWeight: "700", color: isDarkMode ? "#ffffff" : "#37352f" }}>
-          <i className="bi bi-trophy-fill me-2" style={{ color: isDarkMode ? "#ffffff" : "#37352f" }}></i> Conquistas e Recompensas
+        <h1 style={{ fontSize: "26px", fontWeight: "700", color: isDarkMode ? "#ffffff" : "#ad32b5" }}>
+          <i className="bi bi-trophy-fill me-2" style={{ color: isDarkMode ? "#ffffff" : "#ad32b5" }}></i> Conquistas e Recompensas
         </h1>
         <p className="text-muted small">
           Dados sincronizados com MySQL via PHP.

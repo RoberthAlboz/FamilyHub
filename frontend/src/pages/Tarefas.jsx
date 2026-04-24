@@ -149,7 +149,7 @@ function Tarefas() {
   const cardStyle = {
     backgroundColor: isDarkMode ? '#2d2d2d' : '#fff',
     borderColor: isDarkMode ? '#404040' : '#edece9',
-    color: isDarkMode ? '#ffffff' : '#37352f',
+    color: isDarkMode ? '#ffffff' : '#ffc4e8',
     borderRadius: '8px',
     border: '1px solid',
     transition: 'all 0.3s ease'
@@ -157,7 +157,7 @@ function Tarefas() {
 
   return (
     <div className="container-fluid p-0">
-      <h1 style={{ fontSize: '28px', fontWeight: '700', color: isDarkMode ? '#ffffff' : '#37352f' }}>Gerenciador de Tarefas</h1>
+      <h1 style={{ fontSize: '28px', fontWeight: '700', color: isDarkMode ? '#ffffff' : '#8b2082' }}>Gerenciador de Tarefas</h1>
       <p className="text-muted mb-4">Sincronizado com o MySQL</p>
 
       <form onSubmit={handleAddTask} className="mb-4 p-3 shadow-sm" style={{ ...cardStyle, backgroundColor: isDarkMode ? '#333' : '#f7f7f5' }}>

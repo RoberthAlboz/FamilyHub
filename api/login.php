@@ -29,8 +29,8 @@ if (empty($input->email) || empty($input->senha)) {
 
 $email = $input->email;
 
-// Prepared statement
-$stmt = $conn->prepare("SELECT id, nome, email, senha, xp FROM membros WHERE email = ?");
+// Prepared statement - inclui foto_perfil
+$stmt = $conn->prepare("SELECT id, nome, email, senha, xp, foto_perfil FROM membros WHERE email = ?");
 $stmt->bind_param("s", $email);
 $stmt->execute();
 

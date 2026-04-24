@@ -71,7 +71,7 @@ function Financas() {
       background: 'transparent'
     },
     plotOptions: { bar: { borderRadius: 6, columnWidth: '45%', distributed: true } },
-    colors: ['#10b981', '#ef4444'],
+    colors: ['#10b932', '#ef4444'],
     xaxis: { 
       categories: ['Receitas', 'Despesas'], 
       axisBorder: { show: false },
@@ -91,7 +91,7 @@ function Financas() {
       zoom: { enabled: false },
       background: 'transparent'
     },
-    colors: ['#10b981', '#ef4444'],
+    colors: ['#10b91e', '#ef4444'],
     stroke: { curve: 'smooth', width: 3 },
     xaxis: { 
       categories: datasOrdenadas, 
@@ -123,20 +123,20 @@ function Financas() {
 
   return (
     <div className="container-fluid p-0">
-      <h1 style={{ fontSize: '28px', fontWeight: '700', color: isDarkMode ? '#ffffff' : '#37352f', marginBottom: '24px' }}>Controle Financeiro</h1>
+      <h1 style={{ fontSize: '28px', fontWeight: '700', color: isDarkMode ? '#ffffff' : '#ad32b5', marginBottom: '24px' }}>Controle Financeiro</h1>
 
       <div className="row mb-4">
-        <div className="col-md-4"><div style={{ ...cardStyle, borderTop: '4px solid #37352f' }}><h6 style={textMutedStyle}>Saldo</h6><h2 style={{color: saldoAtual >= 0 ? '#10b981' : '#ef4444'}}>{formatarMoeda(saldoAtual)}</h2></div></div>
-        <div className="col-md-4"><div style={{ ...cardStyle, borderTop: '4px solid #10b981' }}><h6 style={textMutedStyle}>Receitas</h6><h2 style={{color: isDarkMode ? '#ffffff' : '#37352f'}}>{formatarMoeda(totalReceitas)}</h2></div></div>
-        <div className="col-md-4"><div style={{ ...cardStyle, borderTop: '4px solid #ef4444' }}><h6 style={textMutedStyle}>Despesas</h6><h2 style={{color: isDarkMode ? '#ffffff' : '#37352f'}}>{formatarMoeda(totalDespesas)}</h2></div></div>
+        <div className="col-md-4"><div style={{ ...cardStyle, borderTop: '4px solid #37352f' }}><h6 style={textMutedStyle}>Saldo</h6><h2 style={{color: saldoAtual >= 0 ? '#10b943' : '#ef4444'}}>{formatarMoeda(saldoAtual)}</h2></div></div>
+        <div className="col-md-4"><div style={{ ...cardStyle, borderTop: '4px solid #16b910' }}><h6 style={textMutedStyle}>Receitas</h6><h2 style={{color: isDarkMode ? '#ffffff' : '#37352f'}}>{formatarMoeda(totalReceitas)}</h2></div></div>
+        <div className="col-md-4"><div style={{ ...cardStyle, borderTop: '4px solid #b41c1c' }}><h6 style={textMutedStyle}>Despesas</h6><h2 style={{color: isDarkMode ? '#ffffff' : '#37352f'}}>{formatarMoeda(totalDespesas)}</h2></div></div>
       </div>
 
       <div className="row">
         <div className="col-md-5 mb-4">
           <div style={cardStyle}>
-            <h4 className="mb-4" style={{color: isDarkMode ? '#ffffff' : '#37352f'}}>Nova Transação</h4>
+            <h4 className="mb-4" style={{color: isDarkMode ? '#ffffff' : '#372f36'}}>Nova Transação</h4>
             <form onSubmit={handleAdicionar}>
-              <input type="text" className="form-control mb-2" placeholder="Descrição" value={descricao} onChange={e => setDescricao(e.target.value)} style={{ backgroundColor: isDarkMode ? '#333' : '#fff', color: isDarkMode ? '#fff' : '#000', borderColor: isDarkMode ? '#444' : '#dee2e6' }} />
+              <input type="text" className="form-control mb-2" placeholder="Descrição" value={descricao} onChange={e => setDescricao(e.target.value)} style={{ backgroundColor: isDarkMode ? '#333' : '#fff', color: isDarkMode ? '#fff' : '#000000', borderColor: isDarkMode ? '#444' : '#dee2e6' }} />
               <div className="d-flex gap-2 mb-3">
                 <input type="number" className="form-control" placeholder="R$" value={valor} onChange={e => setValor(e.target.value)} style={{ backgroundColor: isDarkMode ? '#333' : '#fff', color: isDarkMode ? '#fff' : '#000', borderColor: isDarkMode ? '#444' : '#dee2e6' }} />
                 <select className="form-select" value={tipo} onChange={e => setTipo(e.target.value)} style={{ backgroundColor: isDarkMode ? '#333' : '#fff', color: isDarkMode ? '#fff' : '#000', borderColor: isDarkMode ? '#444' : '#dee2e6' }}>

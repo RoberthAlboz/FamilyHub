@@ -14,8 +14,12 @@ CREATE TABLE IF NOT EXISTS membros (
     papel VARCHAR(50),
     data_nascimento DATE,
     atividades TEXT,
+    foto_perfil VARCHAR(255) DEFAULT NULL,
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- 2.1. Adicionar coluna foto_perfil em banco já existente (execute apenas se necessário)
+-- ALTER TABLE membros ADD COLUMN IF NOT EXISTS foto_perfil VARCHAR(255) DEFAULT NULL;
 
 -- 3. Tabela de Tarefas
 CREATE TABLE IF NOT EXISTS tarefas (

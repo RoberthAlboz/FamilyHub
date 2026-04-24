@@ -72,7 +72,7 @@ function Relatorios() {
   return (
     <div className="container-fluid p-0">
       <div className="mb-4">
-        <h1 style={{ fontSize: '28px', fontWeight: '700', color: isDarkMode ? '#ffffff' : '#37352f', marginBottom: '8px' }}>Relatórios e Visão Geral</h1>
+        <h1 style={{ fontSize: '28px', fontWeight: '700', color: isDarkMode ? '#ffffff' : '#ad32b5', marginBottom: '8px' }}>Relatórios e Visão Geral</h1>
         <p className="text-muted" style={{ fontSize: '14px' }}>Acompanhe a produtividade e os compromissos da família.</p>
       </div>
 

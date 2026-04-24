@@ -15,7 +15,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 // GET - LISTAR MEMBROS
 if ($method === 'GET') {
-    $sql = "SELECT id, nome, xp FROM membros ORDER BY xp DESC";
+    $sql = "SELECT id, nome, xp, foto_perfil FROM membros ORDER BY xp DESC";
     $result = $conn->query($sql);
 
     $membros = [];

@@ -133,7 +133,7 @@ function Calendario() {
       const todosEventos = [...feriadosDoDia, ...eventosDoDia];
       
       dias.push(
-        <div key={d} className="calendar-day border p-1" style={{ minHeight: '100px', backgroundColor: isDarkMode ? '#2d2d2d' : '#fff' }}>
+        <div key={d} className="calendar-day border p-1" style={{ minHeight: '100px', backgroundColor: isDarkMode ? '#2d2d2d' : '#f6f4f4' }}>
           <div className="fw-bold small mb-1">{d}</div>
           <div className="d-flex flex-column gap-1">
             {todosEventos.map((e, idx) => (
@@ -161,7 +161,7 @@ function Calendario() {
     <div className="container-fluid p-0">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
-          <h1 style={{ fontSize: '28px', fontWeight: '700', color: isDarkMode ? '#ffffff' : '#37352f' }}>Calendário Familiar</h1>
+          <h1 style={{ fontSize: '28px', fontWeight: '700', color: isDarkMode ? '#ffffff' : '#823288' }}>Calendário Familiar</h1>
           <p className="text-muted">{meses[dataAtual.getMonth()]} de {dataAtual.getFullYear()}</p>
         </div>
         <div className="d-flex gap-2">

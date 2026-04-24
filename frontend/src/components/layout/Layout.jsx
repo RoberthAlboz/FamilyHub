@@ -8,8 +8,8 @@ function Layout() {
   const { isDarkMode } = useTheme();
 
   const themeStyles = {
-    backgroundColor: isDarkMode ? '#1a1a1a' : '#fafafa',
-    color: isDarkMode ? '#ffffff' : '#37352f',
+    backgroundColor: isDarkMode ? '#1a1a1a' : '#f5e8ff',
+    color: isDarkMode ? '#' : '#37352f',
     transition: 'all 0.3s ease'
   };
 
@@ -66,7 +66,7 @@ function Layout() {
 
         /* Firefox */
         * {
-          scrollbar-color: ${isDarkMode ? '#505050' : '#d0d0d0'} ${isDarkMode ? '#1a1a1a' : '#fafafa'};
+          scrollbar-color: ${isDarkMode ? '#505050' : '#875d86'} ${isDarkMode ? '#1a1a1a' : '#e8b1f7'};
           scrollbar-width: thin;
         }
 
