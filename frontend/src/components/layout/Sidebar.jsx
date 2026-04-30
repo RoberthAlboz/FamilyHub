@@ -93,6 +93,10 @@ function Sidebar() {
         <Link to="/membros" style={linkStyle('/membros')}>
           <i className="bi bi-people"></i> Membros
         </Link>
+
+        <Link to="/ia" style={linkStyle('/ia')}>
+          <i className="bi bi-robot"></i> Assistente IA
+        </Link>
       </nav>
 
       <div className="mt-auto pt-3 border-top" style={{ borderColor: isDarkMode ? '#404040' : '#ffffff' }}>

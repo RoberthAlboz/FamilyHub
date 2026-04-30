@@ -13,6 +13,7 @@ import Financas from './pages/Financas';
 import Membros from './pages/Membros';
 import Relatorios from './pages/Relatorios';
 import Conquistas from './pages/Conquistas';
+import IA from './pages/IA';
 
 import Layout from './components/layout/Layout';
 
@@ -46,6 +47,7 @@ function App() {
               <Route path="membros" element={<Membros />} />
               <Route path="relatorios" element={<Relatorios />} />
               <Route path="conquistas" element={<Conquistas />} />
+              <Route path="ia" element={<IA />} />
             </Route>
 
             {/* Redirecionamento padrão */}
